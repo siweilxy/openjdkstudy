@@ -22,6 +22,7 @@
  *
  */
 
+#include <iostream>
 #include "precompiled.hpp"
 #include "jvm.h"
 #include "classfile/classLoader.hpp"
@@ -368,6 +369,8 @@ void Arguments::process_sun_java_launcher_properties(JavaVMInitArgs* args) {
   for (int index = 0; index < args->nOptions; index++) {
     const JavaVMOption* option = args->options + index;
     const char* tail;
+
+    std::cout<<"option->optionString:"<<option->optionString<<std::endl;
 
     if (match_option(option, "-Dsun.java.launcher=", &tail)) {
       process_java_launcher_argument(tail, option->extraInfo);

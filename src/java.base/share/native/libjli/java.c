@@ -274,9 +274,9 @@ JLI_Launch(int argc, char ** argv,              /* main argc, argv */
      *     the pre 1.9 JRE [ 1.6 thru 1.8 ], it is as if 1.9+ has been
      *     invoked from the command line.
      */
-    printf("%d main_class:%s\n",__LINE__,main_class);
+    printf("file:%s,func:%s,line:%d main_class:%s\n",__FILE__,__FUNCTION__,__LINE__,main_class);
     SelectVersion(argc, argv, &main_class);
-    printf("%d main_class:%s\n",__LINE__,main_class);
+    printf("file:%s,func:%s,line:%d main_class:%s\n",__FILE__,__FUNCTION__,__LINE__,main_class);
 
     CreateExecutionEnvironment(&argc, &argv,
                                jrepath, sizeof(jrepath),

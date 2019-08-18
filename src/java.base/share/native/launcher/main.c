@@ -105,9 +105,9 @@ main(int argc, char **argv)
     {
         int i, main_jargc, extra_jargc;
         JLI_List list;
-        printf("func is %s,line is %d\n",__FUNCTION__,__LINE__);
+        printf("func is %s,line is %d,main start here\n",__FUNCTION__,__LINE__);
 
-        printf("argc:%d\n",argc);
+        //printf("argc:%d\n",argc);
         for(int i=0;i<argc;i++)
         {
             printf("argc:%s\n",argv[i]);

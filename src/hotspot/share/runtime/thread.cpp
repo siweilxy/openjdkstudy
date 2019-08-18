@@ -3743,6 +3743,7 @@ jint Threads::create_vm(JavaVMInitArgs* args, bool* canTryAgain) {
   VM_Version::early_initialize();
 
   // Check version
+  printf("file:%s,func:%s,line:%d args->version:%d\n",__FILE__,__FUNCTION__,__LINE__,args->version);
   if (!is_supported_jni_version(args->version)) return JNI_EVERSION;
 
   // Initialize library-based TLS

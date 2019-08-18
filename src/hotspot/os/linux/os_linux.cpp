@@ -23,6 +23,7 @@
  */
 
 // no precompiled headers
+#include <iostream>
 #include "jvm.h"
 #include "classfile/classLoader.hpp"
 #include "classfile/systemDictionary.hpp"
@@ -353,17 +354,17 @@ pid_t os::Linux::gettid() {
 // Most versions of linux have a bug where the number of processors are
 // determined by looking at the /proc file system.  In a chroot environment,
 // the system call returns 1.
-static bool unsafe_chroot_detected = false;
+static bool unsafe_chroot_detected = false;//是否能找到proc下的进程号
 static const char *unstable_chroot_error = "/proc file system not found.\n"
                      "Java may be unstable running multithreaded in a chroot "
                      "environment on Linux when /proc filesystem is not mounted.";
 
 void os::Linux::initialize_system_info() {
-  set_processor_count(sysconf(_SC_NPROCESSORS_CONF));
+  set_processor_count(sysconf(_SC_NPROCESSORS_CONF));//设置cpu核数
   if (processor_count() == 1) {
     pid_t pid = os::Linux::gettid();
     char fname[32];
-    jio_snprintf(fname, sizeof(fname), "/proc/%d", pid);
+    jio_snprintf(fname, sizeof(fname), "/proc/%d", pid);//打开/proc下的进程文件
     FILE *fp = fopen(fname, "r");
     if (fp == NULL) {
       unsafe_chroot_detected = true;
@@ -372,6 +373,7 @@ void os::Linux::initialize_system_info() {
     }
   }
   _physical_memory = (julong)sysconf(_SC_PHYS_PAGES) * (julong)sysconf(_SC_PAGESIZE);
+  //_SC_PHYS_PAGES 总页数   _SC_PAGESIZE：页大小 相乘就是物理内存大小，单位为字节
   assert(processor_count() > 0, "linux error");
 }
 
@@ -4771,6 +4773,7 @@ void os::Linux::initialize_os_info() {
   if (rc != -1) {
 
     rc = sscanf(_uname.release,"%d.%d.%d", &major, &minor, &fix);
+    std::cout<<"_uname.release的值为：,表示操作系统的版本号，在/proc/version下可以看到"<<_uname.release<<std::endl;
     if (rc == 3) {
 
       if (major < 256 && minor < 256 && fix < 256) {
@@ -5004,12 +5007,14 @@ void os::init(void) {
 
   init_random(1234567);
 
-  Linux::set_page_size(sysconf(_SC_PAGESIZE));
+  Linux::set_page_size(sysconf(_SC_PAGESIZE));//设置页大小
   if (Linux::page_size() == -1) {
     fatal("os_linux.cpp: os::init: sysconf failed (%s)",
           os::strerror(errno));
   }
-  init_page_sizes((size_t) Linux::page_size());
+  init_page_sizes((size_t) Linux::page_size());//初始化页大小
+
+  std::cout<<"page_size:"<<Linux::page_size()<<std::endl;
 
   Linux::initialize_system_info();
 

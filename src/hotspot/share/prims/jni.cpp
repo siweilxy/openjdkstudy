@@ -1084,10 +1084,13 @@ enum JNICallType {
 static void jni_invoke_static(JNIEnv *env, JavaValue* result, jobject receiver, JNICallType call_type, jmethodID method_id, JNI_ArgumentPusher *args, TRAPS) {
   methodHandle method(THREAD, Method::resolve_jmethod_id(method_id));
 
+  printf("\033[47;31mfile:%s,func:%s start,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
+
   // Create object to hold arguments for the JavaCall, and associate it with
   // the jni parser
   ResourceMark rm(THREAD);
   int number_of_parameters = method->size_of_parameters();
+
   printf("\033[47;31mfile:%s,func:%s,line:%d,number_of_parameters is %d\033[0m\n",__FILE__,__FUNCTION__,__LINE__,number_of_parameters);
   JavaCallArguments java_args(number_of_parameters);
   args->set_java_argument_object(&java_args);
@@ -1098,16 +1101,17 @@ static void jni_invoke_static(JNIEnv *env, JavaValue* result, jobject receiver, 
   args->iterate( Fingerprinter(method).fingerprint() );
   // Initialize result type
   result->set_type(args->get_ret_type());
-  printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
+  //printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
 
   // Invoke the method. Result is returned as oop.
   JavaCalls::call(result, method, &java_args, CHECK);
-  printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
+  //printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
 
   // Convert result
   if (result->get_type() == T_OBJECT || result->get_type() == T_ARRAY) {
     result->set_jobject(JNIHandles::make_local(env, (oop) result->get_jobject()));
   }
+  printf("\033[47;31mfile:%s,func:%s end,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
 }
 
 
@@ -3891,10 +3895,12 @@ DT_RETURN_MARK_DECL(CreateJavaVM, jint
 
 static jint JNI_CreateJavaVM_inner(JavaVM **vm, void **penv, void *args) {
   HOTSPOT_JNI_CREATEJAVAVM_ENTRY((void **) vm, penv, args);
-  printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
+  printf("\033[47;31mfile:%s,func:%s start,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
 
   jint result = JNI_ERR;
-  DT_RETURN_MARK(CreateJavaVM, jint, (const jint&)result);
+//  printf("\033[47;31mfile:%s,func:%s before,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
+//  DT_RETURN_MARK(CreateJavaVM, jint, (const jint&)result);
+//  printf("\033[47;31mfile:%s,func:%s after,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
 
   // We're about to use Atomic::xchg for synchronization.  Some Zero
   // platforms use the GCC builtin __sync_lock_test_and_set for this,
@@ -4014,6 +4020,7 @@ static jint JNI_CreateJavaVM_inner(JavaVM **vm, void **penv, void *args) {
   // Flush stdout and stderr before exit.
   fflush(stdout);
   fflush(stderr);
+  printf("\033[47;31mfile:%s,func:%s end,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
 
   return result;
 
@@ -4027,6 +4034,7 @@ _JNI_IMPORT_OR_EXPORT_ jint JNICALL JNI_CreateJavaVM(JavaVM **vm, void **penv, v
 #endif
       printf("\033[47;31mfile:%s,func:%s,line:%d start to load jvm\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
       result = JNI_CreateJavaVM_inner(vm, penv, args);
+      printf("\033[47;31mfile:%s,func:%s,line:%d load jvm end\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
 #ifdef _WIN32
   } __except(topLevelExceptionFilter((_EXCEPTION_POINTERS*)_exception_info())) {
     // Nothing to do.

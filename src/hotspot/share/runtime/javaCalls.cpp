@@ -345,7 +345,7 @@ void JavaCalls::call(JavaValue* result, const methodHandle& method, JavaCallArgu
 
 void JavaCalls::call_helper(JavaValue* result, const methodHandle& method, JavaCallArguments* args, TRAPS) {
 
-  printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
+  //printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
 
   JavaThread* thread = (JavaThread*)THREAD;
   assert(thread->is_Java_thread(), "must be called by a java thread");
@@ -353,7 +353,7 @@ void JavaCalls::call_helper(JavaValue* result, const methodHandle& method, JavaC
   assert(!SafepointSynchronize::is_at_safepoint(), "call to Java code during VM operation");
   assert(!thread->handle_area()->no_handle_mark_active(), "cannot call out to Java here");
 
-  printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
+  //printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
 
   CHECK_UNHANDLED_OOPS_ONLY(thread->clear_unhandled_oops();)
 
@@ -439,12 +439,12 @@ void JavaCalls::call_helper(JavaValue* result, const methodHandle& method, JavaC
     }
   }
 #endif
-  printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
+  //printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
 
   // do call
   { JavaCallWrapper link(method, receiver, result, CHECK);
     { HandleMark hm(thread);  // HandleMark used by HandleMarkCleaner
-    printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
+    //printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
 
       StubRoutines::call_stub()(
         (address)&link,
@@ -457,7 +457,7 @@ void JavaCalls::call_helper(JavaValue* result, const methodHandle& method, JavaC
         args->size_of_parameters(),
         CHECK
       );//!!!!!!!!!!!!
-      printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
+      //printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
 
       result = link.result();  // circumvent MS C++ 5.0 compiler bug (result is clobbered across call)
       // Preserve oop return value across possible gc points
@@ -476,7 +476,7 @@ void JavaCalls::call_helper(JavaValue* result, const methodHandle& method, JavaC
     result->set_jobject((jobject)thread->vm_result());
     thread->set_vm_result(NULL);
   }
-  printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
+  //printf("\033[47;31mfile:%s,func:%s,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
 }
 
 

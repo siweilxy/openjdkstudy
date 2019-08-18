@@ -296,6 +296,7 @@ CreateExecutionEnvironment(int *pargc, char ***pargv,
                            char jrepath[], jint so_jrepath,
                            char jvmpath[], jint so_jvmpath,
                            char jvmcfg[],  jint so_jvmcfg) {
+    printf("\033[47;31mfile:%s,func:%s start,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
 
     char * jvmtype = NULL;
     int argc = *pargc;
@@ -314,11 +315,10 @@ CreateExecutionEnvironment(int *pargc, char ***pargv,
     size_t new_runpath_size;
 #endif  /* SETENV_REQUIRED */
 
-    printf("\033[47;31mfunc:%s,line:%d\033[0m\n",__FUNCTION__,__LINE__);
 
     /* Compute/set the name of the executable */
     SetExecname(*pargv);
-    printf("\033[47;31mfunc:%s,line:%d\033[0m\n",__FUNCTION__,__LINE__);
+
 
     /* Check to see if the jvmpath exists */
     /* Find out where the JRE is that we will be using. */
@@ -328,7 +328,7 @@ CreateExecutionEnvironment(int *pargc, char ***pargv,
     }
     JLI_Snprintf(jvmcfg, so_jvmcfg, "%s%slib%sjvm.cfg",
             jrepath, FILESEP, FILESEP);
-    printf("\033[47;31mjvmcfg:%s\033[0m\n",jvmcfg);
+    //printf("\033[47;31mjvmcfg:%s\033[0m\n",jvmcfg);
 
     /* Find the specified JVM type */
     if (ReadKnownVMs(jvmcfg, JNI_FALSE) < 1) {
@@ -481,6 +481,7 @@ CreateExecutionEnvironment(int *pargc, char ***pargv,
 #endif /* SETENV_REQUIRED */
         JLI_ReportErrorMessageSys(JRE_ERROR4, newexec);
     }
+    printf("\033[47;31mfile%s,func:%s end,line:%d\033[0m\n",__FILE__,__FUNCTION__,__LINE__);
     exit(1);
 }
 
