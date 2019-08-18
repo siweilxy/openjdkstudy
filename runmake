@@ -1,0 +1,1 @@
+bash configure --with-debug-level=slowdebug --with-native-debug-symbols=internal 

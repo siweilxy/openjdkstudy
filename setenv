@@ -1,0 +1,9 @@
+ulimit -c unlimited
+export LANG=c
+export JAVA_HOME=/home/siwei/github/openjdk/build/linux-x86_64-server-slowdebug/jdk
+
+#export JRE_HOME=${JAVA_HOME}/jre
+
+export PATH=${JAVA_HOME}/bin:$PATH
+export PATH=/home/siwei/github/openjdk/build/linux-x86_64-server-slowdebug/hotspot/variant-server/libjvm:$PATH
+export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib:/home/siwei/github/openjdk/build/linux-x86_64-server-slowdebug/jdk/lib/server
